@@ -8,6 +8,10 @@ definePageMeta({
 });
 
 const { isMobile, isTablet } = useMediaQueries();
+import { useAdminStore } from '@/store/admin.store';
+
+const adminStore = useAdminStore();
+const { signOut } = adminStore;
 </script>
 
 <template>
@@ -32,6 +36,7 @@ const { isMobile, isTablet } = useMediaQueries();
       >
         <CommonThemeToggle />
       </div>
+      <v-btn @click="signOut">Log out</v-btn>
     </main>
   </NuxtLayout>
 </template>

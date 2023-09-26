@@ -33,12 +33,25 @@ export default defineNuxtConfig({
     ],
     ['@nuxt/content', {}],
     '@vueuse/motion/nuxt',
-    ['@nuxtjs/supabase', {
-      redirect: false
-    }],
+    [
+      '@nuxtjs/supabase',
+      {
+        redirectOptions: {
+          login: '/login',
+          callback: '/confirm',
+          exclude: [],
+        },
+      },
+    ],
   ],
   routeRules: {
     '/about': { prerender: true },
     '/projects': { prerender: true },
+  },
+  runtimeConfig: {
+    public: {
+      WEBSITE_URL: process.env.WEBSITE_URL,
+      ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+    },
   },
 });

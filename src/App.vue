@@ -9,7 +9,7 @@ useHead({
 });
 
 useSeoMeta({
-  title: 'Howard Tseng',
+  title: 'Admin - Howard Tseng',
   ogTitle: 'Howard Tseng',
   description:
     'Howard Tseng is a freelance photographer specializing in event and portrait photography, as well as a full-stack developer proficient in Vue, React, and Angular based in Ottawa, Ontario, Canada.',
