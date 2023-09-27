@@ -10,15 +10,6 @@ const props = defineProps<Props>();
 <template>
   <div class="home-title">
     <div class="title-container">
-      <h2
-        :class="{
-          overline: true,
-          'overline--tablet': isTablet,
-          'overline--mobile': isMobile,
-        }"
-      >
-        {{ $t("Hi, I'm") }}
-      </h2>
       <h1
         :class="{
           title: true,
@@ -26,7 +17,7 @@ const props = defineProps<Props>();
           'title--mobile': isMobile,
         }"
       >
-        {{ $t('HOWARD') }}
+        Website Manager
       </h1>
     </div>
     <hr class="line" />
@@ -38,16 +29,14 @@ const props = defineProps<Props>();
           'subtitle--mobile': isMobile,
         }"
       >
-        {{ $t('Freelance Photographer') }}
-      </h2>
-      <h2
-        :class="{
-          subtitle: true,
-          'subtitle--tablet': isTablet,
-          'subtitle--mobile': isMobile,
-        }"
-      >
-        {{ $t('Full-Stack Developer') }}
+        <a
+          class="subtitle-link"
+          href="https://howardt12345.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          howardt12345.com
+        </a>
       </h2>
     </div>
   </div>
@@ -79,18 +68,18 @@ const props = defineProps<Props>();
   }
 
   .title {
-    text-align: left;
-    font-size: rem(120);
+    text-align: center;
+    font-size: rem(80);
     font-weight: 400;
     line-height: 0.75;
     margin-left: rem(-8);
 
     &--tablet {
-      font-size: rem(96);
+      font-size: rem(52);
     }
 
     &--mobile {
-      font-size: rem(68);
+      font-size: rem(42);
       text-align: center;
     }
   }
@@ -102,7 +91,7 @@ const props = defineProps<Props>();
   }
 
   .subtitle {
-    text-align: right;
+    text-align: center;
     font-size: rem(28);
     font-weight: 400;
     line-height: 1;
@@ -114,6 +103,16 @@ const props = defineProps<Props>();
     &--mobile {
       font-size: rem(20);
       text-align: center;
+    }
+
+    &-link {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease-in-out;
+
+      &:hover {
+        color: $accent;
+      }
     }
   }
 }
@@ -137,6 +136,7 @@ const props = defineProps<Props>();
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
   animation-delay: 0.5s;
+  margin-bottom: rem(32);
 }
 
 @keyframes subtitleAnimation {
