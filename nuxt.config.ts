@@ -43,11 +43,8 @@ export default defineNuxtConfig({
         },
       },
     ],
+    'nuxt-lodash',
   ],
-  routeRules: {
-    '/about': { prerender: true },
-    '/projects': { prerender: true },
-  },
   runtimeConfig: {
     public: {
       WEBSITE_URL: process.env.WEBSITE_URL,

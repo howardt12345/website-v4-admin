@@ -5,7 +5,6 @@ interface Props {
   photos: PhotoItem[];
   selectedTags: string[];
 }
-
 const props = defineProps<Props>();
 </script>
 
@@ -20,7 +19,10 @@ const props = defineProps<Props>();
       md="6"
       lg="4"
     >
-      <PhotosCard :photo="photo" :selected-tags="selectedTags" />
+      <PhotosCard
+        :photo="photo"
+        :selected-tags="selectedTags"
+      />
     </v-col>
   </v-row>
 </template>

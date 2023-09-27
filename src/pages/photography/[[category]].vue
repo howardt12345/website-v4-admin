@@ -34,9 +34,13 @@ onMounted(() => {
 watch(
   () => category.value,
   () => {
-    selectedTags.value = [];
+    clearTags();
   },
 );
+
+const clearTags = () => {
+  selectedTags.value = [];
+};
 
 const visiblePhotos = computed(() =>
   categoryPhotos.value.filter(
@@ -95,6 +99,7 @@ const toggleCategoriesView = () =>
     :selected-tags="selectedTags"
   />
   <PhotosCategories v-else :categories="categories" />
+  <PhotosAdd />
 </template>
 
 <style scoped lang="scss">
