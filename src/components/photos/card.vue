@@ -99,8 +99,8 @@ const savePhoto = () => {
           >
             {{ tag }}
           </v-chip>
-          <v-chip :value="null" label class="chip" color="primary">
-            <v-icon icon="fas fa-plus" @click="toggleAddingTag"></v-icon>
+          <v-chip :value="null" label class="chip" color="primary" @click="toggleAddingTag"></v-chip>
+            <v-icon icon="fas fa-plus"></v-icon>
           </v-chip>
           <v-text-field
             v-model="tagInput"
