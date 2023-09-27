@@ -82,6 +82,9 @@ const savePhoto = () => {
       </v-img>
 
       <v-card-text>
+        <div>Category:</div>
+        <v-text-field v-model="editedPhoto.category" dense hide-details />
+
         <div>Tags:</div>
         <v-chip-group v-model="selected" color="primary">
           <v-chip
