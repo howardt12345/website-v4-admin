@@ -22,7 +22,7 @@ const links = useNavLinks();
         size="x-large"
         variant="plain"
         :ripple="false"
-        >Howard Tseng</v-btn
+        >WEBSITE MANAGER</v-btn
       >
       <v-divider></v-divider>
       <v-list class="nav-drawer-content">
@@ -52,7 +52,7 @@ const links = useNavLinks();
           size="x-large"
           variant="plain"
           :ripple="false"
-          >Howard Tseng</v-btn
+          >WEBSITE MANAGER</v-btn
         >
       </v-app-bar-title>
       <NavLinks v-if="!isTablet" />
