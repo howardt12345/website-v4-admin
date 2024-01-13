@@ -76,6 +76,25 @@ export const usePhotosStore = defineStore('photos', () => {
     return true;
   };
 
+  const deletePhoto = async (photo: PhotoItem) => {
+    const { data: storageData, error } = await useSupabaseClient()
+      .storage.from('photos').remove([photo.name]);
+    console.log(storageData, error)
+    if (error) {
+      throw error;
+    }
+
+    const { data } = await useSupabaseClient()
+      .from('photos')
+      .delete()
+      .eq('id', photo.id)
+      .select();
+      
+    if (!data) {
+      throw new Error('Error deleting photo');
+    }
+  };
+
   const updatePhotoData = async (photo: PhotoItem) => {
     const { data: updatedPhoto } = await useSupabaseClient()
       .from('photos')
@@ -102,5 +121,6 @@ export const usePhotosStore = defineStore('photos', () => {
     getPhotos,
     uploadPhoto,
     updatePhotoData,
+    deletePhoto,
   };
 });

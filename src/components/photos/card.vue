@@ -40,10 +40,15 @@ const removeTag = (tag: string) => {
   }
 };
 
-const { updatePhotoData, getPhotos } = usePhotosStore();
+const { updatePhotoData, deletePhoto, getPhotos } = usePhotosStore();
 
-const savePhoto = () => {
-  updatePhotoData(editedPhoto.value);
+const savePhoto = async () => {
+  await updatePhotoData(editedPhoto.value);
+  closeDialog();
+  getPhotos();
+};
+
+const deletePhotoItem = async () => {
   closeDialog();
   getPhotos();
 };
@@ -99,7 +104,13 @@ const savePhoto = () => {
           >
             {{ tag }}
           </v-chip>
-          <v-chip :value="null" label class="chip" color="primary" @click="toggleAddingTag"></v-chip>
+          <v-chip
+            :value="null"
+            label
+            class="chip"
+            color="primary"
+            @click="toggleAddingTag"
+          >
             <v-icon icon="fas fa-plus"></v-icon>
           </v-chip>
           <v-text-field
@@ -124,7 +135,7 @@ const savePhoto = () => {
           <v-btn
             color="primary"
             variant="outlined"
-            @click="closeDialog"
+            @click="deletePhotoItem"
             :text="$t('Delete')"
           />
           <v-btn

@@ -1,5 +1,5 @@
 export interface PhotoItem {
-  id?: string;
+  id: string;
   name: string;
   blurb?: string;
   date: string;
