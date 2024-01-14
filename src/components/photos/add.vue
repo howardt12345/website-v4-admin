@@ -18,30 +18,23 @@ const onFileChange = (event: Event) => {
   }
 };
 
-const imageUrl = computed(() => {
-  return URL.createObjectURL(images.value[0]);
-});
-
-const imageWidth = computed(() => {
-  if (images.value.length) {
-    const image = new Image();
-    image.src = imageUrl.value;
-    return image.width;
-  }
-  return 0;
-});
-
-const imageHeight = computed(() => {
-  if (images.value.length) {
-    const image = new Image();
-    image.src = imageUrl.value;
-    return image.height;
-  }
-  return 0;
+const imageUrls = computed(() => {
+  return images.value.map((image) => URL.createObjectURL(image));
 });
 
 const showDialog = ref(false);
 const openDialog = () => (showDialog.value = true);
+
+watch(
+  () => showDialog.value,
+  (newValue) => {
+    if (!newValue) {
+      images.value = [];
+      category.value = '';
+      tags.value = [];
+    }
+  },
+);
 
 const tags = ref<string[]>([]);
 const addTag = () => {
@@ -64,28 +57,29 @@ const toggleAddingTag = () => (addingTag.value = !addingTag.value);
 const category = ref('');
 
 const { uploadPhoto, getPhotos } = usePhotosStore();
+const uploading = ref(false);
 
-const addPhoto = () => {
-  uploadPhoto({
-    file: images.value[0],
+const addPhoto = async () => {
+  uploading.value = true;
+  await uploadPhoto({
+    files: images.value,
     category: category.value,
     tags: tags.value,
-    width: imageWidth.value,
-    height: imageHeight.value,
-  }).then(() => {
-    images.value = [];
-    category.value = '';
-    tags.value = [];
-    showDialog.value = false;
-    getPhotos();
   });
+
+  uploading.value = false;
+  images.value = [];
+  category.value = '';
+  tags.value = [];
+  showDialog.value = false;
+  getPhotos();
 };
 </script>
 
 <template>
   <v-btn
     class="fab-button"
-    :text="$t('Add Photo')"
+    :text="$t('Add Photos')"
     prepend-icon="fas fa-add"
     variant="elevated"
     elevation="2"
@@ -98,48 +92,61 @@ const addPhoto = () => {
         <span class="headline">Add Photo</span>
       </v-card-title>
 
-      <v-card-text>
-        <v-img v-if="images.length" :src="imageUrl"> </v-img>
-      </v-card-text>
+      <div v-if="!uploading">
+        <v-card-text>
+          <v-carousel v-if="images.length" hide-delimiters>
+            <v-carousel-item v-for="url in imageUrls" :key="url">
+              <v-img :src="url"></v-img>
+            </v-carousel-item>
+          </v-carousel>
+        </v-card-text>
 
-      <v-card-actions class="dialog-actions">
-        <input type="file" accept="image/*" @change="onFileChange" />
-        <v-text-field
-          v-model="category"
-          class="dialog-input"
-          dense
-          hide-details
-          variant="outlined"
-          label="Category"
-        />
-
-        <v-chip-group>
-          <v-chip
-            v-for="tag in tags"
-            :key="tag"
-            :value="tag"
-            closable
-            close-icon="fas fa-close"
-            @click:close="removeTag(tag)"
-            >{{ tag }}</v-chip
-          >
-
-          <v-chip :value="null" label class="chip" color="primary">
-            <v-icon icon="fas fa-plus" @click="toggleAddingTag"></v-icon>
-          </v-chip>
+        <v-card-actions class="dialog-actions">
+          <input type="file" accept="image/*" multiple @change="onFileChange" />
           <v-text-field
-            v-show="addingTag"
-            v-model="tagInput"
+            v-model="category"
             class="dialog-input"
             dense
             hide-details
             variant="outlined"
-            @keydown.enter="addTag"
-            @blur="addingTag = false"
+            label="Category"
           />
-        </v-chip-group>
-        <v-btn variant="outlined" color="primary" @click="addPhoto">Add</v-btn>
-      </v-card-actions>
+
+          <v-chip-group>
+            <v-chip
+              v-for="tag in tags"
+              :key="tag"
+              :value="tag"
+              closable
+              close-icon="fas fa-close"
+              @click:close="removeTag(tag)"
+              >{{ tag }}</v-chip
+            >
+
+            <v-chip :value="null" label class="chip" color="primary">
+              <v-icon icon="fas fa-plus" @click="toggleAddingTag"></v-icon>
+            </v-chip>
+            <v-text-field
+              v-show="addingTag"
+              v-model="tagInput"
+              class="dialog-input"
+              dense
+              hide-details
+              variant="outlined"
+              @keydown.enter="addTag"
+              @blur="addingTag = false"
+            />
+          </v-chip-group>
+          <v-btn variant="outlined" color="primary" @click="addPhoto"
+            >Add</v-btn
+          >
+        </v-card-actions>
+      </div>
+      <div v-else>
+        <v-card-text>
+          <v-progress-linear indeterminate color="primary"></v-progress-linear>
+        </v-card-text>
+      </div>
     </v-card>
   </v-dialog>
 </template>

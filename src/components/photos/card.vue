@@ -49,6 +49,7 @@ const savePhoto = async () => {
 };
 
 const deletePhotoItem = async () => {
+  await deletePhoto(editedPhoto.value);
   closeDialog();
   getPhotos();
 };
